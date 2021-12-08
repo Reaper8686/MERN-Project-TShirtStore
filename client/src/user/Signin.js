@@ -112,6 +112,7 @@ function Signin() {
             Don't have a account? create your account{" "}
             <Link to="/signup">here</Link>
           </p>
+          <p>For admin---email:admin@admin.com | password:admin</p>
         </div>
       </div>
     );
