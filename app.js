@@ -30,7 +30,7 @@ mongoose
   .catch("Database error!!");
 
 //middlewares
-app.use(bodyParser.json()); // needs your attention bitch
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
