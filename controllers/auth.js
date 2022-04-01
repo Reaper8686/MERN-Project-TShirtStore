@@ -2,7 +2,7 @@ const User = require("../models/user");
 var jwt = require("jsonwebtoken");
 var expressJwt = require("express-jwt");
 require("dotenv").config();
-const {check, validationResult} = require("express-validator");
+const { check, validationResult } = require("express-validator");
 
 exports.signup = (req, res) => {
   const errors = validationResult(req);
@@ -31,7 +31,7 @@ exports.signup = (req, res) => {
 };
 
 exports.signin = (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -41,7 +41,7 @@ exports.signin = (req, res) => {
     });
   }
 
-  User.findOne({email}, (err, user) => {
+  User.findOne({ email }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
         error: "User Email not found",
@@ -55,14 +55,17 @@ exports.signin = (req, res) => {
     }
 
     //creating token
-    const token = jwt.sign({_id: user._id}, process.env.SECRET);
+    const token = jwt.sign(
+      { _id: user._id, email: user.email, role: user.role },
+      process.env.SECRET
+    );
 
     //put token in cookie
-    res.cookie("token", token, {expire: new Date() + 9999});
+    res.cookie("token", token, { expire: new Date() + 9999 });
 
     //sending response to frontend
-    const {_id, name, email, role} = user;
-    return res.json({token, user: {_id, name, email, role}});
+    const { _id, name, email, role } = user;
+    return res.json({ token, user: { _id, name, email, role } });
   });
 };
 
